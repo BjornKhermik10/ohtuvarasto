@@ -1,57 +1,61 @@
+"""Testiohjelma Varasto-luokan toiminnalle."""
+
 from varasto import Varasto
 
 
-def main():
+def tulosta_varasto(varasto: Varasto, nimi: str) -> None:
+    """Tulostaa varaston tilan ja siihen liittyvät tiedot."""
+    print(f"{nimi}: {varasto}")
+    print(f"saldo = {varasto.saldo}")
+    print(f"tilavuus = {varasto.tilavuus}")
+    print(f"paljonko_mahtuu = {varasto.paljonko_mahtuu()}")
+
+
+def testaa_mehu_varasto(mehua: Varasto) -> None:
+    """Testaa mehuvaraston lisäys- ja otto-operaatiot."""
+    print("Mehu setterit:")
+    mehua.lisaa_varastoon(50.7)
+    tulosta_varasto(mehua, "Mehuvarasto")
+    mehua.ota_varastosta(3.14)
+    tulosta_varasto(mehua, "Mehuvarasto")
+    mehua.lisaa_varastoon(-666.0)
+    tulosta_varasto(mehua, "Mehuvarasto")
+    saatiin = mehua.ota_varastosta(-32.9)
+    print(f"saatiin {saatiin}")
+    tulosta_varasto(mehua, "Mehuvarasto")
+
+
+def testaa_olut_varasto(olutta: Varasto) -> None:
+    """Testaa olutvaraston lisäys- ja otto-operaatiot."""
+    print("Olut getterit:")
+    tulosta_varasto(olutta, "Olutvarasto")
+    olutta.lisaa_varastoon(1000.0)
+    tulosta_varasto(olutta, "Olutvarasto")
+    saatiin = olutta.ota_varastosta(1000.0)
+    print(f"saatiin {saatiin}")
+    tulosta_varasto(olutta, "Olutvarasto")
+
+
+def testaa_virhetilanteet() -> None:
+    """Testaa virheelliset syötteet Varasto-luokalle."""
+    huono = Varasto(-100.0)
+    print(huono)
+    huono = Varasto(100.0, -50.7)
+    print(huono)
+
+
+def main() -> None:
+    """Pääohjelma, joka testaa Varasto-luokan toimintaa."""
     mehua = Varasto(100.0)
     olutta = Varasto(100.0, 20.2)
 
     print("Luonnin jälkeen:")
-    print(f"Mehuvarasto: {mehua}")
-    print(f"Olutvarasto: {olutta}")
+    tulosta_varasto(mehua, "Mehuvarasto")
+    tulosta_varasto(olutta, "Olutvarasto")
 
-    print("Olut getterit:")
-    print(f"saldo = {olutta.saldo}")
-    print(f"tilavuus = {olutta.tilavuus}")
-    print(f"paljonko_mahtuu = {olutta.paljonko_mahtuu()}")
-
-    print("Mehu setterit:")
-    print("Lisätään 50.7")
-    mehua.lisaa_varastoon(50.7)
-    print(f"Mehuvarasto: {mehua}")
-    print("Otetaan 3.14")
-    mehua.ota_varastosta(3.14)
-    print(f"Mehuvarasto: {mehua}")
-
-    print("Virhetilanteita:")
-    print("Varasto(-100.0);")
-    huono = Varasto(-100.0)
-    print(huono)
-
-    print("Varasto(100.0, -50.7)")
-    huono = Varasto(100.0, -50.7)
-    print(huono)
-
-    print(f"Olutvarasto: {olutta}")
-    print("olutta.lisaa_varastoon(1000.0)")
-    olutta.lisaa_varastoon(1000.0)
-    print(f"Olutvarasto: {olutta}")
-
-    print(f"Mehuvarasto: {mehua}")
-    print("mehua.lisaa_varastoon(-666.0)")
-    mehua.lisaa_varastoon(-666.0)
-    print(f"Mehuvarasto: {mehua}")
-
-    print(f"Olutvarasto: {olutta}")
-    print("olutta.ota_varastosta(1000.0)")
-    saatiin = olutta.ota_varastosta(1000.0)
-    print(f"saatiin {saatiin}")
-    print(f"Olutvarasto: {olutta}")
-
-    print(f"Mehuvarasto: {mehua}")
-    print("mehua.otaVarastosta(-32.9)")
-    saatiin = mehua.ota_varastosta(-32.9)
-    print(f"saatiin {saatiin}")
-    print(f"Mehuvarasto: {mehua}")
+    testaa_mehu_varasto(mehua)
+    testaa_olut_varasto(olutta)
+    testaa_virhetilanteet()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ varasto.nimi }} - Varastonhallinta{% endblock %}
+
+{% block content %}
+<h2>{{ varasto.nimi }}</h2>
+
+<p><a href="{{ url_for('main.index') }}">&larr; Takaisin varastolistaan</a></p>
+
+<h3>Lisää tuote</h3>
+<form action="{{ url_for('main.lisaa_tuote', varasto_id=varasto.id) }}" method="post">
+    <input type="text" name="nimi" placeholder="Tuotteen nimi" required>
+    <input type="number" name="maara" placeholder="Määrä" value="0" min="0">
+    <button type="submit" class="btn-primary">Lisää tuote</button>
+</form>
+
+<h3>Tuotteet</h3>
+{% if varasto.tuotteet %}
+<table>
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Määrä</th>
+            <th>Toiminnot</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tuote in varasto.tuotteet %}
+        <tr>
+            <td>{{ tuote.nimi }}</td>
+            <td>
+                <form action="{{ url_for('main.muokkaa_tuotteen_maaraa', tuote_id=tuote.id) }}" method="post" class="inline-form">
+                    <input type="number" name="maara" value="{{ tuote.maara }}" min="0" style="width: 80px;">
+                    <button type="submit" class="btn-secondary">Päivitä</button>
+                </form>
+            </td>
+            <td>
+                <form action="{{ url_for('main.poista_tuote', tuote_id=tuote.id) }}" method="post" class="inline-form">
+                    <button type="submit" class="btn-danger" onclick="return confirm('Haluatko varmasti poistaa tuotteen?')">Poista</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Varastossa ei ole tuotteita.</p>
+{% endif %}
+{% endblock %}

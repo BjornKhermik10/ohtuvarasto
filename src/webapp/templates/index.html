@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Varastot - Varastonhallinta{% endblock %}
+
+{% block content %}
+<h2>Varastot</h2>
+
+<form action="{{ url_for('main.luo_varasto') }}" method="post">
+    <input type="text" name="nimi" placeholder="Uuden varaston nimi" required>
+    <button type="submit" class="btn-primary">Lisää varasto</button>
+</form>
+
+{% if varastot %}
+<table>
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Tuotteiden määrä</th>
+            <th>Toiminnot</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for varasto in varastot %}
+        <tr>
+            <td><a href="{{ url_for('main.nayta_varasto', varasto_id=varasto.id) }}">{{ varasto.nimi }}</a></td>
+            <td>{{ varasto.tuotteet|length }}</td>
+            <td class="actions">
+                <form action="{{ url_for('main.muokkaa_varastoa', varasto_id=varasto.id) }}" method="post" class="inline-form">
+                    <input type="text" name="nimi" value="{{ varasto.nimi }}" required>
+                    <button type="submit" class="btn-secondary">Muokkaa</button>
+                </form>
+                <form action="{{ url_for('main.poista_varasto', varasto_id=varasto.id) }}" method="post" class="inline-form">
+                    <button type="submit" class="btn-danger" onclick="return confirm('Haluatko varmasti poistaa varaston?')">Poista</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ei varastoja. Lisää uusi varasto yllä olevalla lomakkeella.</p>
+{% endif %}
+{% endblock %}

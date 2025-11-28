@@ -86,7 +86,7 @@ def muokkaa_tuotteen_maaraa(tuote_id):
     try:
         maara = int(maara)
     except ValueError:
-        maara = tuote.maara
+        maara = 0
     tuote.maara = maara
     db.session.commit()
     return redirect(url_for('main.nayta_varasto', varasto_id=tuote.varasto_id))
